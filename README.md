@@ -1,6 +1,6 @@
 # StockMind 🧠📦
 ### Sistema Inteligente de Gestión de Inventario y Predicción de Demanda
-
+(Planificacion del Proyecto)
 > Proyecto Integrador — Desarrollo de Software 
 > Curso: Desarrollo de Software, - CESDE
 
