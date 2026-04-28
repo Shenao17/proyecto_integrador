@@ -1,4 +1,4 @@
-### 🧠📦 StockMind
+## 🧠📦 StockMind
 Sistema Inteligente de Gestión de Inventario y Predicción de Demanda
 
 Proyecto Integrador — Desarrollo de Software
