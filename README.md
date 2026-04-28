@@ -1,299 +1,190 @@
-<<<<<<< HEAD
-# StockMind React — Sistema Inteligente de Gestión de Inventario
+### 🧠📦 StockMind
+Sistema Inteligente de Gestión de Inventario y Predicción de Demanda
 
-> Segundo avance — Proyecto Integrador · Frontend con React
+Proyecto Integrador — Desarrollo de Software
+Institución: CESDE
+Estado: En desarrollo
 
----
+## 📌 Descripción del Proyecto
 
-## Descripción
+StockMind es una plataforma web orientada a pequeñas y medianas empresas que integra:
 
-StockMind es una plataforma web para la gestión de inventario y ventas con roles diferenciados. Esta versión React implementa todas las funcionalidades del segundo hito: gestión de estado, comunicación entre componentes via props y context, navegación dinámica con rutas protegidas y lógica de autenticación local.
+Gestión de inventario
+Registro de ventas
+Control de stock en tiempo real
+Predicción de demanda mediante machine learning
 
----
+## El sistema busca resolver dos problemas críticos:
 
-## Tecnologías
+📉 Sobrestock → capital inmovilizado en productos que no se venden
+📈 Quiebre de stock → pérdida de ventas por falta de productos
 
-| Tecnología | Versión | Rol |
-|---|---|---|
-| React | 18.2 | Framework UI |
-| React Router DOM | 6.x | Navegación dinámica |
-| Vite | 5.x | Build tool |
-| localStorage | — | Persistencia de datos (demo) |
+La solución no solo registra datos, sino que analiza el historial de ventas para predecir la demanda futura y recomendar cantidades óptimas de reabastecimiento.
 
----
+## 🚀 Evolución del Proyecto
 
-## Instalación
+### 🧩 Momento 1 — Diseño y Arquitectura
+Definición de la arquitectura distribuida
+Modelado de base de datos
+Diseño de módulos del sistema
+Separación por servicios (Java, Python, Node)
 
-```bash
-# Clonar el repositorio
-git clone <https://github.com/Shenao17/proyecto_integrador.git>
-cd stockmind-react
+### ⚛️ Momento 2 — Implementación Frontend con React
 
-# Instalar dependencias
-npm install
+En esta fase se introduce React como tecnología principal del frontend, logrando:
 
-# Ejecutar en desarrollo
-npm run dev
-```
+Estructuración por componentes reutilizables
+Manejo de estado con useState y Context API
+Navegación dinámica con rutas protegidas
+Simulación de backend mediante localStorage
+Separación clara entre lógica y presentación
 
-La app estará disponible en `http://localhost:5173`
+Esto permite escalar el sistema y prepararlo para integración con el backend real.
 
-### Credenciales demo
 
-| Rol | Usuario | Contraseña |
-|---|---|---|
-| Admin | `admin` | `admin123` |
-| Vendedor | `vendedor1` | `vendedor123` |
+### 🧱 Tecnologías del Sistema
 
----
+El proyecto está dividido en capas, cada una con una responsabilidad clara:
 
-## Mapa de Rutas
+### ⚛️ Frontend — HTML + CSS + JavaScript (React)
 
-```
-/login          → Pública  · Inicio de sesión
-/register       → Pública  · Registro de usuario
+Interfaz de usuario del sistema.
 
-/dashboard      → Privada  · Panel principal (Admin + Vendedor)
-/products       → Privada  · Gestión de productos (Admin + Vendedor)
-/sales          → Privada  · Registro y listado de ventas (Admin + Vendedor)
-/inventory      → Privada  · Movimientos de inventario (Solo Admin)
-/users          → Privada  · Gestión de usuarios (Solo Admin)
-=======
-# StockMind 🧠📦
-### Sistema Inteligente de Gestión de Inventario y Predicción de Demanda
-(Planificacion del Proyecto)
-> Proyecto Integrador — Desarrollo de Software 
-> Curso: Desarrollo de Software, - CESDE
+Inicialmente no se utilizó un framework para enfocarse en la arquitectura, pero posteriormente se implementó React para:
 
----
+- Mejorar la escalabilidad
+- Organizar componentes
+- Facilitar el mantenimiento
 
-## ¿De qué trata el proyecto?
+📌 El frontend consume exclusivamente el API Gateway.
 
-StockMind es una plataforma web para pequeñas y medianas empresas que combina la gestión operativa de inventario y ventas con un módulo de **predicción de demanda basado en machine learning**.
 
-El problema que resuelve es simple pero costoso: las empresas pequeñas pierden dinero de dos formas:
-- Compran demasiado de lo que no se vende (sobrestock = capital inmovilizado)
-- Se les acaba lo que más se vende (quiebre de stock = perdida de ventas)
+### 🌐 API Gateway — Node.js + Express
 
-La solución es un sistema que no solo registre ventas e inventario, sino que **aprenda del historial de ventas para predecir cuánto se va a vender la próxima semana o mes**, y recomiende exactamente cuánto reabastecer a un futuro.
+Punto de entrada único del sistema.
 
----
+## Responsabilidades:
 
-## Tecnologías y por qué cada una
+- Autenticación centralizada con JWT
+- Enrutamiento hacia servicios internos
+- Manejo de CORS y rate limiting
 
-El sistema está dividido en capas, y cada tecnología fue elegida porque hace algo que las demás no hacen igual de bien o son complejos de hacer.
+### ☕ Backend Principal — Java + Spring Boot
 
-### Frontend — HTML + CSS + JavaScript (React)
-La interfaz de usuario. Inicialmente se decidió no usar un framework como React o Vue para mantener el foco en la arquitectura del sistema; sin embargo, recientemente se implementó React para mejorar la escalabilidad, la organización de componentes y la experiencia de desarrollo.
-El frontend consume exclusivamente las rutas del gateway, nunca habla directamente con Java ni con Python.
+Encargado de la lógica de negocio crítica.
 
-### API Gateway — Node.js + Express
-El punto de entrada único del sistema. Toda petición del frontend pasa primero por aquí. Sus responsabilidades son:
-- Verificar el token JWT de autenticación en un solo lugar
-- Enrutar hacia Java o Python según el módulo solicitado
-- Aplicar rate limiting y CORS
+Se eligió por:
 
-Node.js es ideal para este rol por su naturaleza no bloqueante, perfecta para manejar múltiples conexiones concurrentes hacia servicios distintos.
+- Manejo de transacciones ACID
+- Seguridad y robustez
+- Integración con JPA / Hibernate
 
-### Backend Principal — Java + Spring Boot ( el mas importane :D )
-La lógica de negocio crítica. Java fue elegido por su robustez en el manejo de transacciones. La operación más sensible del sis-tema es registrar una venta: en una sola transacción ACID debe descontarse el stock de cada producto, registrarse la venta, guardarse el detalle y registrarse el movimiento de inventario. Si algo falla, todo se revierte. Spring Boot con JPA e Hibernate sobre MySQL garantiza esto (Q complicadoxd).
+Ejemplo crítico:
+Registrar una venta implica múltiples operaciones que deben ejecutarse de forma atómica.
 
-### Base de Datos — MySQL
-Base de datos relacional. La elección se justifica por la naturaleza de los datos: productos, ventas, inventario y usuarios tienen relaciones estrictas de integridad referencial. MySQL garantiza que nunca se pierda el historial de ventas aunque se elimine un producto, y que el stock nunca quede en un estado inconsistente.
+### 🗄️ Base de Datos — MySQL
 
-### Microservicio de Analítica — Python + Flask
-El componente de inteligencia del sistema. Python fue elegido porque su ecosistema científico no tiene equivalente real en los otros lenguajes del stack:
+Base de datos relacional.
 
-- **pandas** — manipulación y agregación de series temporales de ventas
-- **scikit-learn** — implementación de regresión lineal con cálculo de R² 
-- **numpy** — operaciones vectoriales para media móvil ponderada
+Garantiza:
 
-Este microservicio es independiente del resto del sistema. Si no está disponible, el inventario y las ventas siguen funcionando. Su único trabajo es analizar datos históricos y generar predicciones(algo basico pero que hace la diferencia)
+- Integridad referencial
+- Consistencia de datos
+- Persistencia confiable del historial
 
----
+### 🧠 Microservicio de Analítica — Python + Flask
 
-## Arquitectura propuesta
+Encargado del análisis predictivo.
 
-```
+Tecnologías:
+
+- pandas → procesamiento de datos
+- scikit-learn → modelos de regresión
+- numpy → cálculos matemáticos
+
+📌 Es independiente del sistema principal.
+
+
+### 🏗️ Arquitectura del Sistema
 [ Navegador Web ]
-      |
-      | HTTP/REST
-      v
+        |
+        | HTTP/REST
+        v
 [ API Gateway — Node.js :3000 ]
-      |                    |
-      | /api/*             | /api/predictions/*
-      v                    v
+        |                    |
+        | /api/*             | /api/predictions/*
+        v                    v
 [ Java Spring Boot :8080 ] [ Python Flask :8000 ]
-      |                           |
-      +----------+  +-------------+
-                 |  |
-                 v  v
-           [ MySQL :3306 ]
-```
+        |                           |
+        +-----------+---------------+
+                    |
+                    v
+               [ MySQL :3306 ]
 
-El frontend NUNCA accede directamente a Java ni a Python. Todo pasa por el gateway. Esta decisión permite cambiar la implementación interna de cualquier servicio sin afectar al usuario.
 
----
+## 🧩 Módulos del Sistema
 
-## Módulos del sistema
+| Módulo          | Tecnología | Descripción                           |
+| --------------- | ---------- | ------------------------------------- |
+| Autenticación   | Java + JWT | Login con roles                       |
+| Productos       | Java       | CRUD con control de stock             |
+| Inventario      | Java       | Movimientos de stock                  |
+| Ventas          | Java       | Registro con actualización automática |
+| Reportes        | Java       | Análisis de ventas                    |
+| Predicciones    | Python     | Estimación de demanda                 |
+| Recomendaciones | Python     | Sugerencias de reabastecimiento       |
 
-| Módulo | Tecnología | Descripción |
-|--------|-----------|-------------|
-| Autenticación | Java + JWT | Login con roles Admin y Vendedor |
-| Productos | Java | CRUD completo con control de stock mínimo |
-| Inventario | Java | Registro de entradas, salidas y ajustes con trazabilidad |
-| Ventas | Java | Registro con descuento automático de stock |
-| Reportes | Java | Ventas por período, top productos |
-| Predicciones | Python | Estimación de demanda semanal y mensual |
-| Recomendaciones | Python | Cantidad sugerida a reabastecer por producto |
+## 📊 Modelo de Predicción
 
----
+El sistema selecciona automáticamente el modelo más adecuado:
 
-## Modelo de predicción de demanda
+📈 Regresión Lineal
+Se usa con suficiente historial (≥ 4 semanas)
+Requiere R² > 0.30
 
-El microservicio Python implementa dos estrategias con selección automática:
 
-**Regresión Lineal Simple**  
-Se aplica cuando el producto tiene 4 o más semanas de historial y el coeficiente de determinación R² supera el 0.30. Esto significa que la tendencia lineal explica al menos el 30% de la varianza de los datos, indicando que el modelo es confiable para proyectar hacia el futuro.
 
-**Media Móvil Ponderada (WMA)**  
-Se aplica cuando hay pocos datos o cuando la tendencia no es clara (R² bajo). Promedia las últimas semanas dándole más peso a las más recientes. Es más conservador pero más robusto con historial irregular.
+## 📉 Media Móvil Ponderada (WMA)
+Se usa con pocos datos
+Mayor estabilidad ante variaciones
 
-La selección es automática. El sistema evalúa la calidad del ajuste y elige el modelo más apropiado para cada producto en cada consulta.
+## 📌 Fórmula de Reabastecimiento
 
-**Fórmula de recomendación de reabastecimiento:**
-```
-recomendacion = demanda_mensual_proyectada 
-              + (demanda_mensual × 20% de stock de seguridad) 
+recomendacion = demanda_proyectada 
+              + (demanda × 20% seguridad) 
               - stock_actual 
               + stock_minimo
->>>>>>> 1cd671fba72eeeb7344c48a10a978d8662209579
-```
 
----
+## 🗃️ Base de Datos
 
-<<<<<<< HEAD
-## Lógica de Protección de Rutas (HU07)
+| Tabla               | Descripción          |
+| ------------------- | -------------------- |
+| users               | Usuarios del sistema |
+| categories          | Categorías           |
+| products            | Productos            |
+| sales               | Ventas               |
+| sale_details        | Detalle de ventas    |
+| inventory_movements | Movimientos          |
+| demand_predictions  | Predicciones         |
 
-La protección se implementa mediante el componente `ProtectedRoute`:
 
-```jsx
-// src/components/ProtectedRoute.jsx
-function ProtectedRoute({ children, adminOnly }) {
-  const { currentUser } = useAuth()
+📌 Estado del Proyecto
+[X]Arquitectura definida
+[X]Modelo de datos
+[X]Frontend en React (Momento 2)
+[En Progreso]Backend Java
+[En Progreso]Microservicio Python
+[En Progreso]API Gateway
+[En Progreso]Integración total
 
-  if (!currentUser) return <Navigate to="/login" replace />
-  if (adminOnly && currentUser.role !== 'Admin') return <Navigate to="/dashboard" replace />
 
-  return children
-}
-```
+## 👨‍💻 Autor
 
-El estado de autenticación vive en `AuthContext` y se persiste en `localStorage` bajo la clave `stockmind_session`. Al intentar acceder manualmente a cualquier ruta privada sin sesión activa, el sistema redirige automáticamente al login.
+Sebastian Henao
+Técnico en Desarrollo de Software
+CESDE — 2025
 
----
+## 💬 Nota Final
 
-## Arquitectura de Componentes
+Este proyecto está diseñado no solo como solución funcional, sino como una arquitectura escalable basada en microservicios, preparada para evolucionar hacia un sistema completo de analítica empresarial.
 
-```
-src/
-├── context/
-│   └── AuthContext.jsx        → Estado global de autenticación (useContext)
-├── services/
-│   ├── usersService.js        → Mock CRUD de usuarios (localStorage)
-│   ├── productsService.js     → Mock CRUD de productos (localStorage)
-│   ├── salesService.js        → Mock registro de ventas (localStorage)
-│   └── inventoryService.js    → Mock movimientos de inventario (localStorage)
-├── components/
-│   ├── ProtectedRoute.jsx     → HOC de protección de rutas
-│   ├── layout/
-│   │   └── Layout.jsx         → Sidebar + topbar (recibe children via props)
-│   └── ui/
-│       └── index.jsx          → Button, Card, Input, Select, Modal, Table, Badge...
-└── pages/
-    ├── Login.jsx              → HU06 · Inicio de sesión
-    ├── Register.jsx           → HU05 · Registro de usuario
-    ├── Dashboard.jsx          → Vista principal con métricas
-    ├── Products.jsx           → HU08/HU09 · Listado y registro de productos
-    ├── Sales.jsx              → HU09 · Registro y visualización de ventas
-    ├── Inventory.jsx          → Movimientos de stock (Admin)
-    └── Users.jsx              → CRUD de usuarios (Admin)
-```
-
----
-
-## Conceptos implementados
-
-### useState
-Gestión de formularios controlados en todas las páginas. Ejemplo en `Products.jsx`:
-```jsx
-const [form, setForm] = useState({ name: '', sku: '', price: '' })
-```
-
-### Props
-Los datos fluyen desde páginas hacia componentes UI. Ejemplo: `ProductCard` recibe `product`, `onEdit`, `onDelete`, `isAdmin` y `formatCOP` como props desde `Products.jsx`.
-
-### Context API
-`AuthContext` provee `currentUser`, `login`, `logout` e `isAdmin` a todos los componentes sin prop drilling.
-
-### React Router
-Navegación declarativa con rutas anidadas y redirección condicional basada en estado de autenticación y rol.
-
----
-
-## Dependencias instaladas
-
-```json
-{
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0",
-  "react-router-dom": "^6.22.0"
-}
-```
-
----
-
-## Proyección Momento 3
-
-Los servicios en `src/services/` están diseñados para ser reemplazados por llamadas `fetch()` al gateway Node.js con mínimo esfuerzo. Solo se requiere:
-
-1. Agregar `useEffect` en cada página para la carga inicial
-2. Reemplazar funciones del servicio por `async/await fetch()`
-3. El gateway ya está implementado en puerto `3000`
-
-Los nombres de atributos respetan exactamente el modelo de base de datos definido en el README del sistema completo.
-=======
-## Base de datos — Tablas principales
-
-| Tabla | Descripción |
-|-------|-------------|
-| `users` | Usuarios del sistema con roles |
-| `categories` | Clasificación de productos |
-| `products` | Catálogo con stock actual y mínimo |
-| `sales` | Cabecera de ventas |
-| `sale_details` | Detalle de productos por venta |
-| `inventory_movements` | Historial completo de movimientos de stock |
-| `demand_predictions` | Predicciones generadas por el microservicio Python |
-
----
-
-## Estado del proyecto
-
-- [x] Diseño de arquitectura
-- [x] Modelo de base de datos
-- [ ] Backend Java — en desarrollo
-- [ ] Microservicio Python — en desarrollo
-- [ ] Gateway Node.js — en desarrollo
-- [ ] Frontend — en desarrollo
-- [ ] Integración y pruebas
-
----
-
-## Equipo
-
-Desarrollado por **Sebastian Henao**  
-Programa: Tecnico en Desarrollo de Software
-Institución: CESDE  
-Período: 2025-1
-:D 
->>>>>>> 1cd671fba72eeeb7344c48a10a978d8662209579
