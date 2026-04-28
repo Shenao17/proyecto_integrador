@@ -22,8 +22,9 @@ La solución es un sistema que no solo registre ventas e inventario, sino que **
 
 El sistema está dividido en capas, y cada tecnología fue elegida porque hace algo que las demás no hacen igual de bien o son complejos de hacer.
 
-### Frontend — HTML + CSS + JavaScript
-La interfaz de usuario. Se decidió no usar un framework como React o Vue para mantener el foco en la arquitectura del sistema. El frontend consume exclusivamente las rutas del gateway, nunca habla directamente con Java ni con Python.
+### Frontend — HTML + CSS + JavaScript (React)
+La interfaz de usuario. Inicialmente se decidió no usar un framework como React o Vue para mantener el foco en la arquitectura del sistema; sin embargo, recientemente se implementó React para mejorar la escalabilidad, la organización de componentes y la experiencia de desarrollo.
+El frontend consume exclusivamente las rutas del gateway, nunca habla directamente con Java ni con Python.
 
 ### API Gateway — Node.js + Express
 El punto de entrada único del sistema. Toda petición del frontend pasa primero por aquí. Sus responsabilidades son:
